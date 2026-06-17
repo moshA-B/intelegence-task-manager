@@ -8,7 +8,7 @@ class DB_connection:
             port=3306,
             user="root",
             password="1234",
-            database="intelligence_db"
+            database="Intelligence_db"
         )
     
     @staticmethod
@@ -44,8 +44,8 @@ class DB_connection:
                        title VARCHAR(50) NOT NULL,
                        description TEXT NOT NULL,
                        location VARCHAR(50) NOT NULL,
-                       difficulty INT CHECK (difficulty >= 1 AND difficulty <= 10),
-                       importance INT CHECK(importance >=1 AND importance <= 10),
+                       difficulty INT CHECK (difficulty >= 1 AND difficulty <= 10) NOT NULL,
+                       importance INT CHECK(importance >=1 AND importance <= 10) NOT NULL,
                        status VARCHAR(50) DEFAULT 'NEW',
                        risk_level VARCHAR(50),
                        assigned_agent_id INT);""")
