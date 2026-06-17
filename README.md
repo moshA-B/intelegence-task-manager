@@ -25,7 +25,7 @@ intelligence-task-manager/
 |column|type|info|
 |----|----|----|
 |id|INT, AUTO_INCREMENT, PRIMARY KEY|unique id|
-|name|VARCHAR(255)|agent name|
+|name|VARCHAR(50)|agent name|
 |specialty| VARCHAR(225)| agents specialty|
 |is_active|BOOLEAN|DEFAULT : TRUE|
 |completed_missions|INT|DEFAULT : 0|
