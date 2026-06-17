@@ -101,4 +101,3 @@ class MissionDB:
             cursor.execute("""SELECT assigned_agent_id, COUNT(*) AS total GROUP BY assigned_agent_id ORDER BY DESC""")
             top = cursor.fetchall()
         return top[0]
-

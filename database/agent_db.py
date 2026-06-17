@@ -10,7 +10,7 @@ class AgentDB:
         columns_str = ",".join(columns)
         placeholders = ",".join(["%s"] * len(columns))
         
-        query = f"INSERT INTO agents({columns_str} VALUES({placeholders}))"
+        query = f"INSERT INTO agents({columns_str}) VALUES({placeholders})"
         with self.conn.cursor() as cursor:
             cursor.execute(query, vals)
             self.conn.commit()
@@ -30,7 +30,7 @@ class AgentDB:
     def get_agent_by_id(self, id):
         with self.conn.cursor(dictionary=True) as cursor:
             cursor.execute("SELECT * FROM agents WHERE id = %s",(id,))
-            row = cursor.fetchall()
+            row = cursor.fetchone()
         if row:
             return row
         else:
