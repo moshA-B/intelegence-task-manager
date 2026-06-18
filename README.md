@@ -109,9 +109,7 @@ docker run -d --name intelligence-mysql -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DAT
 create a venv and activate it
 ####
 install requirements.txt
-####
-create an instance of DB_connections and one of AgentDb and of MissionDB, 
-or crate a main,  
+####   
 run create_database() to insure it exists and run create_tables(),
 can now preform the methods on the other classes
 
