@@ -21,7 +21,7 @@ class DB_connection:
         )
         cursor = cnx.cursor()
         try:
-            cursor.execute("CREATE DATABASE intelligence_db")
+            cursor.execute("CREATE DATABASE Intelligence_db")
         except Exception as e:
             print(e)
             return True

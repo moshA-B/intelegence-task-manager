@@ -1,4 +1,4 @@
-import db_connection
+from database import db_connection
 
 class MissionDB:
     def __init__(self):
@@ -48,9 +48,8 @@ class MissionDB:
         if assigned_missions >= 3:
             return None
         with self.conn.cursor() as cursor:
-            cursor.execute("UPDATE missions SET assigned_agent_id = %s WHERE id = %s AND status=NEW",(a_id, m_id))
+            cursor.execute("UPDATE missions SET assigned_agent_id = %s, status = 'ASSIGNED' WHERE id = %s AND status= 'NEW'",(a_id, m_id))
             self.conn.commit()
-            self.update_mission_status(m_id, "ASSIGNED")
             changed = cursor.rowcount > 0
         return changed
     
@@ -63,8 +62,9 @@ class MissionDB:
     
     def get_open_missions_by_agent(self, id):
         with self.conn.cursor(dictionary=True) as cursor:
-            cursor.execute("""SELECT COUNT(*) AS open WHERE assigned_agent_id = %s 
-                           AND (status = ASSIGNED OR status = IN_PROGRESS)""" , (id,))
+            cursor.execute("""SELECT COUNT(*) AS open FROM missions 
+                           WHERE assigned_agent_id = %s 
+                           AND (status = 'ASSIGNED' OR status = 'IN_PROGRESS')""" , (id,))
             num = cursor.fetchone()
         return num["open"]
     
@@ -77,27 +77,36 @@ class MissionDB:
     
     def count_by_stats(self, status):
         with self.conn.cursor(dictionary=True) as cursor:
-            cursor.execute("SELECT COUNT(*) AS total FROM missions WHERE status = %s", (status))
+            cursor.execute("SELECT COUNT(*) AS total FROM missions WHERE status = %s", (status,))
             num = cursor.fetchone()
 
         return num["total"]
     
     def count_open_missions(self):
         with self.conn.cursor(dictionary=True) as cursor:
-            cursor.execute("SELECT COUNT(*) AS open FROM missions WHERE status = ASSIGNED OR status = IN_PROGRESS")
+            cursor.execute("SELECT COUNT(*) AS open FROM missions WHERE status = 'ASSIGNED' OR status = 'IN_PROGRESS'")
             num = cursor.fetchone()
 
         return num["open"]
     
     def count_critical_missions(self):
         with self.conn.cursor(dictionary=True) as cursor:
-            cursor.execute("SELECT COUNT(*) AS critical FROM missions WHERE risk_level = CRITICAL ")
+            cursor.execute("SELECT COUNT(*) AS critical FROM missions WHERE risk_level = 'CRITICAL' ")
             num = cursor.fetchone()
 
         return num["critical"]
     
     def get_top_agent(self):
         with self.conn.cursor(dictionary=True) as cursor:
-            cursor.execute("""SELECT assigned_agent_id, COUNT(*) AS total GROUP BY assigned_agent_id ORDER BY DESC""")
+            cursor.execute("""SELECT * FROM agents WHERE completed_missions =
+                            (SELECT MAX(completed_missions) FROM agents) 
+                            """)
             top = cursor.fetchall()
-        return top[0]
+        return top
+    
+    # SELECT assigned_agent_id, COUNT(*) AS total
+    #                         FROM missions 
+    #                         GROUP BY assigned_agent_id 
+    #                         WHERE assigned_agent_id IS NOT NULL 
+    #                         ORDER BY total DESC 
+    #                         LIMIT 1""")

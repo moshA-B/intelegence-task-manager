@@ -1,4 +1,4 @@
-import db_connection
+from database import db_connection
 
 class AgentDB:
     def __init__(self):
@@ -73,9 +73,10 @@ class AgentDB:
             cursor.execute("""SELECT completed_missions + failed_missions AS total,
                             completed_missions AS completed,
                             failed_missions AS failed,
-                            ((completed_missions + failed_missions)/100 )* completed_missions AS success_rate
+                            (completed_missions/NULLIF((completed_missions + failed_missions), 0))* 100 AS success_rate
+                           FROM agents
                            WHERE id = %s """, (id,))
-            performance = cursor.fetchall()
+            performance = cursor.fetchone()
         return performance
         
 
