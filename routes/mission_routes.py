@@ -42,7 +42,8 @@ def create_mission(body : Mission):
     logger.info("POST new mission called")
     logger.info("creating new mission ")
 
-    new = handel_content(missions.create_mission(body.model_dump(exclude_none=True)), "failed to create mission, difficulty and importance must 1 +", 400)
+    new = handel_content(missions.create_mission(body.model_dump(exclude_none=True)), 
+                         "failed to create mission, difficulty and importance must 1 - 10", 400)
     logger.info("new mission added")
     
     return new
@@ -74,7 +75,7 @@ def assign_mission_to_agent(id : int, agent_id : int):
 
     mission = handel_content(get_mission_by_id(id), "mission doesn't exist")
 
-    agent = handel_content(agents.get_agent_by_id(agent_id), "agent doesn't exist")
+    agent = handel_content(agents.get_agent_by_id(agent_id), f"agent {agent_id} doesn't exist")
 
     if not agent["is_active"]:
         logger.error("agent no active ")

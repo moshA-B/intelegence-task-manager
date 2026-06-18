@@ -24,7 +24,7 @@ def handel_content(func, fail_message = "", status_code = 404):
 
 class Agent(BaseModel):
     name : str
-    specialty  :str
+    specialty  :str | None = None
     agent_rank : Literal['Junior','Senior','Commander']
 
 class UpdateAgent(BaseModel):
@@ -44,7 +44,7 @@ agents = agent_db.AgentDB()
 def create_agent(body : Agent):
     logger.info("POST agent called")
     logger.info("creating agent")
-    new = handel_content(agents.create_agent(body.model_dump()), "failed to create agent")
+    new = handel_content(agents.create_agent(body.model_dump(exclude_none=True)), "failed to create agent")
     logger.info("agent created %s", new["id"])
     return new
     
