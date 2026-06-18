@@ -4,9 +4,11 @@ from database import agent_db, mission_db
 import logging
 from pathlib import Path
 
-log_path = Path(__file__).parents[1] /"logs"/"app.log"
+log_path = Path(__file__).parents[1] /"logs"
+log_path.mkdir(parents=True, exist_ok=True)
+log_file = log_path/"app.log"
 
-logging.basicConfig(handlers=[logging.StreamHandler(), logging.FileHandler(log_path)],
+logging.basicConfig(handlers=[logging.StreamHandler(), logging.FileHandler(log_file)],
                     level=logging.INFO,
                     format="%(asctime)s | %(levelname)s | %(message)s")
 
@@ -35,12 +37,12 @@ agents = agent_db.AgentDB()
 router = APIRouter()
 
 
-@router.post("")
+@router.post("",status_code=201)
 def create_mission(body : Mission):
     logger.info("POST new mission called")
     logger.info("creating new mission ")
 
-    new = handel_content(missions.create_mission(body.model_dump(exclude_none=True)), "failed to create mission", 500)
+    new = handel_content(missions.create_mission(body.model_dump(exclude_none=True)), "failed to create mission, difficulty and importance must 1 +", 400)
     logger.info("new mission added")
     
     return new
@@ -65,7 +67,7 @@ def get_mission_by_id(id: int):
     return mission
 
 
-@router.put("/{id}/assign/{agent_id}")
+@router.put("/{id}/assign/{agent_id}",status_code=201)
 def assign_mission_to_agent(id : int, agent_id : int):
     logger.info("assigned mission called")
     logger.info("initiating")
@@ -93,7 +95,7 @@ def assign_mission_to_agent(id : int, agent_id : int):
         
     
 
-@router.put("/{id}/start")
+@router.put("/{id}/start",status_code=201)
 def start_mission(id : int):
     logger.info("start mission called to start mission %s", id)
 
@@ -112,7 +114,7 @@ def start_mission(id : int):
     return {"message": "started"}
 
 
-@router.put("/{id}/complete")
+@router.put("/{id}/complete",status_code=201)
 def complete_mission(id: int):
     logger.info("complete mission called to complete mission %s", id)
 
@@ -127,7 +129,7 @@ def complete_mission(id: int):
     return {"massage" :"completed"}
 
 
-@router.put("/{id}/fail")
+@router.put("/{id}/fail",status_code=201)
 def fail_mission(id :int):
     logger.info("fail mission called to fail mission %s", id)
 
@@ -142,7 +144,7 @@ def fail_mission(id :int):
     return {"massage" :"marked as failed"}
 
 
-@router.put("/{id}/cancel")
+@router.put("/{id}/cancel",status_code=201)
 def cancel_mission(id :int):
     logger.info("cancel mission called to cancel mission %s", id)
 

@@ -85,6 +85,10 @@ intelligence-task-manager/
 |count_critical_missions()|returns count of missions where risk level is CRITICAL|
 |get_top_agent()|returns agent with the most completed missions|
 
+## Endpoints:
+
+
+
 
 ## System rules:
 
@@ -110,8 +114,6 @@ create a venv and activate it
 ####
 install requirements.txt
 ####   
-run create_database() to insure it exists and run create_tables(),
-can now preform the methods on the other classes
-
+run python main.py 
 
 

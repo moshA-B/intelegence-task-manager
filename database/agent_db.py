@@ -85,4 +85,19 @@ class AgentDB:
             cursor.execute("SELECT COUNT(*) AS active FROM agents WHERE is_active = TRUE")
             num = cursor.fetchone()
         return num["active"]
+    
+
+    def count_completed_missions(self):
+        with self.conn.cursor(dictionary=True) as cursor:
+            cursor.execute("SELECT SUM(completed_missions) AS completed FROM agents")
+            count = cursor.fetchone()
+        return count["completed"]
+    
+    def count_failed_missions(self):
+        with self.conn.cursor(dictionary=True) as cursor:
+            cursor.execute("SELECT SUM(failed_missions) AS failed FROM agents")
+            count = cursor.fetchone()
+        return count["failed"]
+
+
 

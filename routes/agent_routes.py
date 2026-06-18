@@ -7,6 +7,7 @@ from pathlib import Path
 
 log_path = Path(__file__).parents[1] /"logs"/"app.log"
 
+
 logging.basicConfig(handlers=[logging.StreamHandler(), logging.FileHandler(log_path)],
                     level=logging.INFO,
                     format="%(asctime)s | %(levelname)s | %(message)s")
@@ -29,7 +30,9 @@ class Agent(BaseModel):
 class UpdateAgent(BaseModel):
     name : str | None = None
     specialty  :str | None = None
+    is_active : bool | None = None
     agent_rank : Literal['Junior','Senior','Commander'] | None = None
+
 
 router = APIRouter()
 
@@ -37,7 +40,7 @@ agents = agent_db.AgentDB()
 
 
 
-@router.post("")
+@router.post("",status_code=201)
 def create_agent(body : Agent):
     logger.info("POST agent called")
     logger.info("creating agent")
@@ -62,20 +65,29 @@ def get_agent_by_id(id : int):
     return agent
 
 
-@router.put("/{id}")
+@router.put("/{id}",status_code=201)
 def update_agent(id : int, body: UpdateAgent):
+    logger.info("update agent called")
+    logger.info("updating agent...")
     handel_content(agents.update_agent(id, body.model_dump(exclude_none=True)), "id not found")
+    logger.info("agent %s updated", id)
     return {"message": "updated"}
 
 
 
-@router.put("/{id}/deactivate")
+@router.put("/{id}/deactivate",status_code=201)
 def deactivate_agent(id):
+    logger.info("deactivate agent called")
+    logger.info("deactivating agent...")
     handel_content(agents.deactivate_agent(id), "id not found")
+    logger.info("agent %s is deactivated", id)
     return {"message": "deactivated"}
 
-@router.get("{id}/performance")
+@router.get("{id}/performance",status_code=201)
 def get_performance(id: int):
-    re = agents.get_agent_performance(id)
-    return re
+    logger.info("agent performance called")
+    logger.info("showing agent performance...")
+    performance = handel_content(agents.get_agent_performance(id), "id not found")
+    logger.info("got performance for agent %s", id)
+    return performance
 

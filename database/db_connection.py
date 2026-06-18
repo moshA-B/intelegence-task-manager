@@ -22,12 +22,17 @@ class DB_connection:
         cursor = cnx.cursor()
         try:
             cursor.execute("CREATE DATABASE Intelligence_db")
+            cursor.execute("USE Intelligence_db")
         except Exception as e:
             print(e)
             return True
+        finally:
+            cnx.close()
+            cursor.close()
         
     @staticmethod
     def create_tables():
+        DB_connection.create_database()
         conn = DB_connection.get_connection()
         cursor = conn.cursor()
         cursor.execute("""CREATE TABLE IF NOT EXISTS agents(
