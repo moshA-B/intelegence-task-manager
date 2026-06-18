@@ -111,7 +111,8 @@ intelligence-task-manager/
 |endpoint | action|
 |----|----|
 |POST /agents| creates agent|
-|GET /agents
+|GET /agents | gets all agents|
+|
 
 
 
@@ -135,12 +136,13 @@ intelligence-task-manager/
 ## Run instructions:
 
 #### run 
-docker run -d --name intelligence-mysql -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=Intelligence_db -p 3306:3306 mysql:8.0
+docker run -d --name intelligence-mysql -e MYSQL_ROOT_PASSWORD=1234 -p 3306:3306 mysql:8.0
 #### 
 create a venv and activate it
 ####
 install requirements.txt
 ####   
-run python main.py 
+run python main.py ,
+might need to run twice
 
 
