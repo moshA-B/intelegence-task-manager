@@ -94,6 +94,25 @@ intelligence-task-manager/
 
 ## Endpoints:
 
+### missions:
+
+|endpoint | action|
+|----|----|
+|POST /missions| creates a mission|
+|GET /missions | gets all missions|
+|GET /missions/{id} | gets specific mission|
+|PUT /missions{id}/assign/ {agent_id}| assigns mission to agent|
+|PUT /missions/{id}/start | starts a mission|
+|PUT /missions/{id}/complete | completes a mission|
+|Put /missions/{id}/cancel | cancels a mission |
+
+
+### agents
+|endpoint | action|
+|----|----|
+|POST /agents| creates agent|
+|GET /agents
+
 
 
 

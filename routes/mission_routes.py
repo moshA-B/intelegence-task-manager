@@ -40,7 +40,7 @@ router = APIRouter()
 @router.post("",status_code=201)
 def create_mission(body : Mission):
     logger.info("POST new mission called")
-    logger.info("creating new mission ")
+    logger.info("creating new mission ..")
 
     new = handel_content(missions.create_mission(body.model_dump(exclude_none=True)), 
                          "failed to create mission, difficulty and importance must 1 - 10", 400)
@@ -51,7 +51,7 @@ def create_mission(body : Mission):
 @router.get("")
 def get_all_missions():
     logger.info("get all missions called")
-    logger.info("initiating")
+    logger.info("initiating..")
 
     all_missions = handel_content(missions.get_all_missions(), "no missions yet")
     logger.info("get all missions successful")
@@ -71,7 +71,7 @@ def get_mission_by_id(id: int):
 @router.put("/{id}/assign/{agent_id}",status_code=201)
 def assign_mission_to_agent(id : int, agent_id : int):
     logger.info("assigned mission called")
-    logger.info("initiating")
+    logger.info("initiating ..")
 
     mission = handel_content(get_mission_by_id(id), "mission doesn't exist")
 
@@ -99,6 +99,7 @@ def assign_mission_to_agent(id : int, agent_id : int):
 @router.put("/{id}/start",status_code=201)
 def start_mission(id : int):
     logger.info("start mission called to start mission %s", id)
+    logger.info("initiating ...")
 
     mission = handel_content(get_mission_by_id(id), "mission not found")
     if mission["status"] != "ASSIGNED":
@@ -118,6 +119,7 @@ def start_mission(id : int):
 @router.put("/{id}/complete",status_code=201)
 def complete_mission(id: int):
     logger.info("complete mission called to complete mission %s", id)
+    logger.info("initiating ...")
 
     mission = handel_content(get_mission_by_id(id), "mission not found")
     if mission["status"] != "IN_PROGRESS":
@@ -133,6 +135,8 @@ def complete_mission(id: int):
 @router.put("/{id}/fail",status_code=201)
 def fail_mission(id :int):
     logger.info("fail mission called to fail mission %s", id)
+    logger.info("initiating ...")
+
 
     mission = handel_content(get_mission_by_id(id), "mission not found")
     if mission["status"] != "IN_PROGRESS":
@@ -148,6 +152,7 @@ def fail_mission(id :int):
 @router.put("/{id}/cancel",status_code=201)
 def cancel_mission(id :int):
     logger.info("cancel mission called to cancel mission %s", id)
+    logger.info("initiating ...")
 
     mission = handel_content(get_mission_by_id(id), "mission not found")
     if mission["status"] not in ["IN_PROGRESS", "NEW"]:

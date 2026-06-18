@@ -53,6 +53,7 @@ def create_agent(body : Agent):
 @router.get("")
 def get_all_agents():
     logger.info("GET all  agent called ")
+    logger.info("initiating ...")
     all = handel_content(agents.get_all_agents(), "no agents yet")
     logger.info("GET all agents successful")
     return all
@@ -60,6 +61,7 @@ def get_all_agents():
 @router.get("/{id}")
 def get_agent_by_id(id : int):
     logger.info("GET agent by id called ")
+    logger.info("initiating ...")
     agent = handel_content(agents.get_agent_by_id(id), f"agent {id} not found")
     logger.info("agent found %s", id)
     return agent
